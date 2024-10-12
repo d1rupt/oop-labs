@@ -75,3 +75,7 @@ void Game::set_instructions(const string& instructions) {
 string Game::get_instructions_filename() const {
     return instructions_filename;
 }
+
+string Game::whoami() const {
+    return "Game";
+}
