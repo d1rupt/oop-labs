@@ -68,14 +68,12 @@ void test3() {
 }
 
 void test4() {
-
     MultiplayerGame* mGame1 = new MultiplayerGame("Uno", "uno.txt", 2, 4, 5);
     //тестируем методы
 
     assert(mGame1->whoami() == "MultiplayerGame");
-	Game* game5 = mGame1;
-	assert(game5->whoami() == "MultiplayerGame"); //т.к. функция виртульная, то хотя и указатель на Game, все равно должен вызывается MultiplayerGame::whoami()
-	
+    Game* game5 = mGame1;
+    assert(game5->whoami() == "MultiplayerGame"); //т.к. функция виртульная, то хотя и указатель на Game, все равно должен вызывается MultiplayerGame::whoami()
 
     assert(mGame1->get_name() == "Uno");
     assert(mGame1->get_instructions_filename() == "uno.txt");
@@ -101,7 +99,7 @@ void test4() {
     Player* players[2];
     players[0] = new Player(6);
     players[1] = new Player(10);
-    
+
     assert(mGame1->CanPlay(players, 2) == true);
     assert(mGame1->CanPlay(players, 0) == false);
 
@@ -116,15 +114,15 @@ void test4() {
     cout << "[TEST4] OK" << endl;
 }
 
-void test5(){
-	//тестируем конструкторы
-	Game* game4 = new Game("Chess", "chess.txt");
-	assert(game4->whoami() == "Game");
+void test5() {
+    //тестируем конструкторы
+    Game* game4 = new Game("Chess", "chess.txt");
+    assert(game4->whoami() == "Game");
 
-	MultiplayerGame* mGame2 = new MultiplayerGame(*game4, 2, 2, 6);
+    MultiplayerGame* mGame2 = new MultiplayerGame(*game4, 2, 2, 6);
 
-	assert(mGame2->get_name() == "Chess");
-	assert(mGame2->get_instructions_filename() == "chess.txt");
+    assert(mGame2->get_name() == "Chess");
+    assert(mGame2->get_instructions_filename() == "chess.txt");
     assert(mGame2->get_min_players() == 2);
     assert(mGame2->get_max_players() == 2);
     assert(mGame2->get_min_age() == 6);
@@ -132,7 +130,7 @@ void test5(){
     MultiplayerGame* mGame3 = new MultiplayerGame(*mGame2);
 
     assert(mGame3->get_name() == "Chess");
-	assert(mGame3->get_instructions_filename() == "chess.txt");
+    assert(mGame3->get_instructions_filename() == "chess.txt");
     assert(mGame3->get_min_players() == 2);
     assert(mGame3->get_max_players() == 2);
     assert(mGame3->get_min_age() == 6);
@@ -145,7 +143,7 @@ void test5(){
 }
 
 int main() {
-	cout << "TESTING GAME CLASS" << endl;
+    cout << "TESTING GAME CLASS" << endl;
     test1();
     test2();
     test3();

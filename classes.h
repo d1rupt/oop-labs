@@ -4,12 +4,12 @@
 using namespace std;
 
 class Game {
-private:
+   private:
     string name;
     string instructions_filename;
     bool prepared;
 
-public:
+   public:
     Game();
     Game(const string&, const string&);
     Game(const Game&);
@@ -29,19 +29,20 @@ public:
     virtual string whoami() const;
 };
 
-class Player{
-public:
+class Player {
+   public:
     Player();
     Player(int);
     Player(const Player&);
 
     int get_age() const;
-private:
+
+   private:
     int age;
 };
 
-class MultiplayerGame:public Game {
-public:
+class MultiplayerGame : public Game {
+   public:
     MultiplayerGame();
     MultiplayerGame(const string&, const string&, int, int, int);
     MultiplayerGame(const Game&, int, int, int);
@@ -57,11 +58,10 @@ public:
     void set_max_players(int);
     void set_min_age(int);
 
-    virtual string whoami() const;
+    string whoami() const override;
 
-private:
+   private:
     int min_players;
     int max_players;
     int min_age;
-
 };
