@@ -142,6 +142,122 @@ void test5() {
     cout << "[TEST5] OK" << endl;
 }
 
+
+void test6(){
+    //добавление игры
+    vector<shared_ptr<Game>> games;
+    shared_ptr<Game> game(new Game());
+    games.push_back(game);
+
+    unique_ptr<GameRoom> room(new GameRoom(games, {}));
+    assert(room->get_games().size() == 1);
+
+    shared_ptr<Game> newGame(new MultiplayerGame());
+    room->add_game(newGame);
+    assert(room->get_games().size() == 2);
+
+    cout << "[TEST6] OK" << endl;
+}
+
+void test7(){
+    //добавление игрока
+    vector<shared_ptr<Player>> players;
+    shared_ptr<Player> player(new Player());
+    players.push_back(player);
+
+    unique_ptr<GameRoom> room( new GameRoom({}, players));
+    assert(room->get_players().size() == 1);
+
+    shared_ptr<Player> newPlayer(new Player());
+    room->add_player(newPlayer);
+    assert(room->get_players().size() == 2);
+
+    cout << "[TEST7] OK" << endl;
+}
+
+void test8(){
+    //функция формирования подмножества игроков
+    vector<shared_ptr<Player>> players = {
+        make_shared<Player>(10, "Alice"),
+        make_shared<Player>(20, "Bob"),
+        make_shared<Player>(30, "Charlie")
+    };
+
+    
+    unique_ptr<GameRoom> room(new GameRoom({}, players));
+    vector<string> namesToFind = {"Alice", "Charlie"};
+    auto subset = room->get_players_subset(namesToFind);
+    assert(subset.size() == 2);
+    assert(subset[0]->get_name() == "Alice");
+    assert(subset[1]->get_name() == "Charlie");
+
+    cout << "[TEST8] OK" << endl;
+}
+
+void test9(){
+    //функц выбора игры
+    vector<shared_ptr<Game>> games = {
+        make_shared<Game>(),
+        make_shared<MultiplayerGame>()
+    };
+    
+    vector<shared_ptr<Player>> players = {make_shared<Player>(10, "Alice")};
+    
+    unique_ptr<GameRoom> room(new GameRoom(games, players));
+    
+    auto chosenGame = room->chooseGame(players);
+    
+    assert(chosenGame == games[0]);
+
+    cout << "[TEST9] OK" << endl;
+}
+
+void test10(){
+    vector<shared_ptr<Game>> games = {
+        make_shared<Game>(),
+        make_shared<MultiplayerGame>()
+    };
+    
+    vector<shared_ptr<Player>> players; // No players
+    
+    unique_ptr<GameRoom> room(new GameRoom(games, players));
+    
+    auto chosenGame = room->chooseGame(players);
+    
+    assert(chosenGame == games[0]);
+
+    cout << "[TEST10] OK" << endl;
+}
+
+void test11(){
+    vector<shared_ptr<Game>> games = {
+        make_shared<MultiplayerGame>("game1", "i", 2, 10, 18),
+        make_shared<MultiplayerGame>("game2", "i", 2, 4, 6)
+    };
+    
+    vector<shared_ptr<Player>> players = {
+        make_shared<Player>(10, "Alice"),
+        make_shared<Player>(8, "Bob"),
+        make_shared<Player>(2, "Charlie")
+    };
+    
+    unique_ptr<GameRoom> room(new GameRoom(games, players));
+    
+
+    vector<string> namesToFind = {"Alice", "Bob"};
+    auto chosenGame = room->chooseGame(room->get_players_subset(namesToFind));
+    
+    assert(chosenGame == games[1]);
+
+
+    namesToFind = {"Alice", "Charlie"};
+    chosenGame = room->chooseGame(room->get_players_subset(namesToFind));
+
+    assert(chosenGame == nullptr); //charlie слишком молод
+
+    cout << "[TEST11] OK" << endl;
+}
+
 int main() {
     cout << "TESTING GAME CLASS" << endl;
     test1();
@@ -152,5 +268,15 @@ int main() {
 
     test4();
     test5();
+
+    cout << "TESTING GAMEROOM CLASS" << endl;
+
+    test6();
+    test7();
+    test8();
+    test9();
+    test10();
+    test11();
+
     return 0;
 }
