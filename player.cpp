@@ -1,7 +1,12 @@
 #include "classes.h"
 
-Player::Player(int age_) {
+Player::Player() {
+    return;
+};
+
+Player::Player(int age_, string name_) {
     age = age_;
+    name = name_;
 }
 
 Player::Player(const Player &player) {
@@ -10,4 +15,9 @@ Player::Player(const Player &player) {
 
 int Player::get_age() const {
     return age;
+}
+
+
+string Player::get_name() const {
+	return name;
 }

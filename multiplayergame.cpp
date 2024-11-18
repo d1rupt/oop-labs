@@ -1,6 +1,8 @@
 #include "classes.h"
 #include <iostream>
-
+MultiplayerGame::MultiplayerGame() {
+	return;
+};
 MultiplayerGame::MultiplayerGame(const string& name, const string& instructions, 
                                    int min_players_, int max_players_, int min_age_ = 0) 
     : Game(name, instructions) { 
