@@ -9,7 +9,9 @@ IndexAddressTree::IndexAddressTree(){
 }
 
 IndexAddressTree::~IndexAddressTree(){
-	return;
+//	cout << "dest tree " << endl;
+	delete_values();
+	delete root;
 }
 
 nodeData::nodeData(){
@@ -39,15 +41,22 @@ nodeData::nodeData(const nodeData& other)
     }
 }
 
+nodeData::~nodeData(){
+//	cout << "dest nodeData " << index_char << endl;
+	for(auto x: children){
+		delete x;
+	}
+	children.clear();
+}
 
-bool operator==(endNodeData t1, endNodeData t2){
+bool operator == (endNodeData& t1, endNodeData& t2){
 	//cout << "Comparing endNodes..." << endl;
 	return (t1.address == t2.address && t1.full_index == t2.full_index);
 }
 
-bool operator << (const IndexAddressTree& t, endNodeData entry){
+bool IndexAddressTree::operator << (endNodeData entry){
 	string index = "";
-	nodeData* current_node = t.root;
+	nodeData* current_node = this->root;
 	int pos = 0;
 	nodeData* next;
 	string inserting_index = entry.full_index;
@@ -105,6 +114,7 @@ int IndexAddressTree::length(nodeData* b) const{
 }
 
 int IndexAddressTree::remove(endNodeData* entry, nodeData* cur, int ind){
+	if(cur == nullptr) cur = this->root;
 	if(ind == entry->full_index.size()){
 		delete cur; return 1;
 	} //cur - end
@@ -162,6 +172,7 @@ vector<string> IndexAddressTree::find_indexes(nodeData* cur, vector<string> foun
 	return found;
 }
 
+// TODO: optimize this
 IndexAddressTree* IndexAddressTree::operator && (const IndexAddressTree* t){
 	vector<string> ind = this->find_indexes();
 
@@ -176,7 +187,7 @@ IndexAddressTree* IndexAddressTree::operator && (const IndexAddressTree* t){
 	return newtree;
 }
 
-
+// TODO: optimize this
 bool operator == (const IndexAddressTree& t1, const IndexAddressTree& t2){
 	//cout << "Comparing trees..." << endl;
 	vector<string> i1 = t1.find_indexes();
@@ -198,21 +209,11 @@ bool operator == (const IndexAddressTree& t1, const IndexAddressTree& t2){
 	return true;
 };
 
-bool IndexAddressTree::delete_values(nodeData* cur){
-	if(cur==nullptr) cur = root;
-	if(cur->children.empty() && cur!=root){
-		//cout << "deleted child";
-		delete cur;
-		return true;
-	}
-
-	for(auto i = cur->children.begin(); i<cur->children.end(); i++){
-		//cout << (*i)->index_char;
-		this->delete_values(*i);
-		(*i)->children.clear();
-	}
-	if(cur!=root){
-	delete cur;
+bool IndexAddressTree::delete_values(){
+	for(auto i = root->children.begin(); i<root->children.end(); i++){
+		//cout << "del " <<(*i)->index_char;
+		delete (*i);
+		root->children.clear();
 	}
 	return true;
 }

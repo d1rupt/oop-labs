@@ -30,6 +30,7 @@ public:
 	nodeData(string, string);
 	nodeData(char);
 	nodeData(const nodeData&);
+	~nodeData();
 	char index_char;
 	string address;
 	vector<nodeData*> children{};
@@ -59,17 +60,15 @@ public:
 	IndexAddressTree(const IndexAddressTree&);
 	~IndexAddressTree();
 
-	bool delete_values(nodeData* cur = nullptr);
+	bool delete_values();
 	int length(nodeData* n = nullptr) const;
 	bool save_to_file(string) const;
 	bool load_from_file(string);
 	
-	friend bool operator == (const IndexAddressTree&, const IndexAddressTree&);
-	friend bool operator << (const IndexAddressTree&, endNodeData);
 	endNodeData* operator [] (string) const;
 	IndexAddressTree* operator && (const IndexAddressTree*);
 
-	int remove(endNodeData* entry, nodeData* cur, int ind = 0);
+	int remove(endNodeData* entry, nodeData* cur = nullptr, int ind = 0);
 	bool has_index(string);
 
 	vector<string> find_indexes(nodeData* n = nullptr, vector<string> r = {}, string s = "") const;
@@ -80,8 +79,13 @@ public:
         ar & root;
     }
 
-	nodeData* root;
-
-
 	vector<string> autocomplete(string prefix, nodeData* cur = nullptr, vector<string> r = {}) const;
+	bool operator << (endNodeData);
+
+private:
+		nodeData* root;
 };
+
+
+bool operator == (const IndexAddressTree&, const IndexAddressTree&);
+bool operator == (const endNodeData&, const endNodeData&);

@@ -42,7 +42,7 @@ void testRm() {
     tree << endNodeData{"Another Address", "12346"};
 
     endNodeData* entry = tree["12345"];
-    tree.remove(entry, tree.root);
+    tree.remove(entry);
     assert(tree["12345"] == nullptr);
 
     entry = tree["12345"];
@@ -95,7 +95,7 @@ void testDelVal() {
     assert(tree["12345"] != nullptr);
     assert(tree["12346"] != nullptr);
 
-    tree.delete_values(tree.root);
+    tree.delete_values();
 
     assert(tree["12345"] == nullptr);
     assert(tree["12346"] == nullptr);
