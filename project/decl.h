@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <random>
+#include <algorithm>
 #include "plusaes.hpp"
 #include "base64.hpp"
 #include "decl.h"
@@ -60,7 +62,8 @@ public:
     shared_ptr<PasswordEntry> findPassword(const string& site);
 
     void displayPasswords();
-
+    void showPasswords();
     bool save_to_file();
     bool load();
+    string generatePassword(int length, bool includeUppercase, bool includeNumbers, bool includeSpecial);
 };

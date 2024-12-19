@@ -135,6 +135,16 @@ void PasswordManager::displayPasswords() {
     }
 }
 
+void PasswordManager::showPasswords(){
+	string master;
+    cout << "Input master key [16 characters]" << endl;
+    cin >> master;
+
+    for (const auto& password : passwords) {
+        cout << "Ввод сайта: " << password->getSite() << "\nИмя: " << password->getUsername() << "\nПароль: " << password->decryptPassword(master);
+    }
+}
+
 bool PasswordManager::save_to_file() {
 
 
@@ -180,4 +190,30 @@ bool PasswordManager::load() {
     
     file.close();
     return true;
+}
+
+string PasswordManager::generatePassword(int length, bool includeUppercase, bool includeNumbers, bool includeSpecial) {
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const string numbers = "0123456789";
+    const string special = "!@#$%^&*()-_=+[]{}|;:,.<>?/";
+
+    string characterPool = lower;
+    if (includeUppercase) characterPool += upper;
+    if (includeNumbers) characterPool += numbers;
+    if (includeSpecial) characterPool += special;
+
+    if (characterPool.empty()) {
+        throw invalid_argument("Character pool is empty. Cannot generate password.");
+    }
+
+    random_device rd;
+    mt19937 generator(rd());
+    uniform_int_distribution<> distribution(0, characterPool.size() - 1);
+
+    string password;
+    for (int i = 0; i < length; ++i) {
+        password += characterPool[distribution(generator)];
+    }
+    return password;
 }
