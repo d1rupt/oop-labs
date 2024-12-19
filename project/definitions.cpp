@@ -13,14 +13,14 @@ using namespace std;
 
 // Base64 decoding function
 string CryptoUtils::base64_decode(const string& in) {
-    // Implement Base64 decoding or use the one in your base64.hpp file
+    
     auto decoded = base64::from_base64(in);;
     // Fill the decoded vector with decoded bytes from Base64 string
     return decoded;
 }
 
 string CryptoUtils::base64_encode(const string& in) {
-    // Implement Base64 decoding or use the one in your base64.hpp file
+    
     auto encoded = base64::to_base64(in);
     // Fill the decoded vector with decoded bytes from Base64 string
     return encoded;
@@ -108,9 +108,11 @@ PasswordEntry::PasswordEntry(const string& site, const string& username, const s
     this->encryptedPassword = encryptedPassword;
 }
 
-//конструктор копирования потом будет 
+//конструктор копирования
 PasswordEntry::PasswordEntry(const PasswordEntry& other) {
-
+    this->site = other.getSite();
+    this->username = other.getUsername();
+    this->encryptedPassword = other.getEncryptedPassword();
 }
 
 //оператор перегрузки вывода
@@ -183,7 +185,7 @@ bool PasswordManager::load() {
     }
     string site, username, encryptedPassword;
     while (getline(file, site) && getline(file, username) && getline(file, encryptedPassword)) {
-        // Assuming PasswordEntry constructor takes these arguments
+        
         auto passwordEntry = make_shared<PasswordEntry>(site, username, encryptedPassword);
         passwords.push_back(passwordEntry);
     }

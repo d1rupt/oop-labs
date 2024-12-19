@@ -40,20 +40,6 @@ public:
     friend ostream& operator<<(ostream& os, const PasswordEntry& entry);
 };
 
-class PersonalPassword :public PasswordEntry {
-public:
-    PersonalPassword(const string& site, const string& username, const string& encryptedPassword) :PasswordEntry(site, username, encryptedPassword) {};
-    //void encryptPassword() override;
-    //void decryptPassword() override;
-};
-
-class WorkPassword :public PasswordEntry {
-public:
-    WorkPassword(const string& site, const string& username, const string& encryptedPassword) :PasswordEntry(site, username, encryptedPassword) {};
-    //void encryptPassword() override;
-    //void decryptPassword() override;
-};
-
 class PasswordManager {
 protected:
     vector<shared_ptr<PasswordEntry>> passwords;
